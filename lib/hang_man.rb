@@ -1,4 +1,6 @@
 require 'yaml'
+require 'pry'
+
 class HangMan
   def initialize
     @right_guess = []
@@ -6,6 +8,7 @@ class HangMan
     @guess_count = 6
     @guess_remaining = 6
     @guessed_word = ''
+    @saved_game = false
     @word = ''
   end
 
@@ -17,6 +20,8 @@ class HangMan
     input = gets.chomp.strip
     case input
     when '1' then
+      @guess_remaining = 6
+      @saved_game = false
       start
     when '2' then
       load_saved_game
@@ -68,6 +73,7 @@ class HangMan
         guess_count: @guess_count,
         guess_remaining: @guess_remaining,
         guessed_word: @guessed_word,
+        saved_game: true,
         word: @word
       )
     end
@@ -95,6 +101,7 @@ class HangMan
     @guess_count = saved_game[:guess_count]
     @guessed_word = saved_game[:guessed_word]
     @guess_remaining = saved_game[:guess_remaining]
+    @saved_game = saved_game[:saved_game]
     @word = saved_game[:word]
 
     saved_game_details
@@ -134,7 +141,7 @@ class HangMan
   def saved_game_details
     puts '=' * 36
     puts "Guessed word: #{@guessed_word}"
-    puts "You have #{@guess_count - @wrong_guess.length} missed guesses remaining."
+    puts "You have #{@guess_count - @wrong_guess.length} trials remaining."
     puts '=' * 36
   end
 
@@ -154,6 +161,8 @@ class HangMan
     loop do
       input = guess_or_save
       display_arr = display.split('')
+      saved_game_display_arr = @guessed_word.split(' ')
+      display_arr = saved_game_display_arr if @saved_game
       word_arr = word.split('')
       if word.include?(input)
         if display_arr.include?(input)
