@@ -106,7 +106,6 @@ class HangMan
 
     saved_game_details
     play
-
   end
 
   def exit_game
@@ -116,7 +115,7 @@ class HangMan
   def miss(input)
     @wrong_guess << input
     @guess_remaining -= 1
-    puts "Wrong Guess!! You have #{@guess_count - @wrong_guess.length} trials remaining."
+    puts "Wrong Guess!! You have #{@guess_remaining} trials remaining."
   end
 
   def correct(input)
